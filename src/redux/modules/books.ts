@@ -53,6 +53,14 @@ const reducer = handleActions<BooksState, any>(
       error: null,
       loading: false,
     }),
+    DELETE_BOOK: (state, action) => ({
+      ...state,
+      books: state.books.filter(
+        (book) => book.bookId !== action.payload.bookId,
+      ),
+      loading: false,
+      error: null,
+    }),
     SUCCESS: (state, action) => ({
       ...state,
       books: action.payload.books,
@@ -96,6 +104,14 @@ function* addBookSaga(action: any) {
   }
 }
 // [project] 책을 삭제하는 saga 함수를 작성했다.
+function* deleteBookSaga(action: any) {
+  try {
+    const token: string = yield select(getTokenFromState);
+    yield call(BookService.deleteBook, token, action.payload.bookId);
+  } catch (error) {
+    yield put(fail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')));
+  }
+}
 // [project] 책을 수정하는 saga 함수를 작성했다.
 
 // [project] saga 함수를 실행하는 액션과 액션 생성 함수를 작성했다.
@@ -103,4 +119,5 @@ function* addBookSaga(action: any) {
 export function* sagas() {
   yield takeEvery(`${options.prefix}/GET_BOOKS`, getBooksListSaga);
   yield takeEvery(`${options.prefix}/ADD_BOOK`, addBookSaga);
+  yield takeEvery(`${options.prefix}/DELETE_BOOK`, deleteBookSaga);
 }
