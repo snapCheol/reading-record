@@ -42,7 +42,10 @@
   font-size: 14px;
   padding-left: 10px;
 }
-
+.tooltips button {
+  margin: 0 3px;
+  font-size: 12px;
+}
 .link_url {
   font-size: 12px;
 }

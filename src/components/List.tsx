@@ -10,6 +10,7 @@ interface BooksProps {
   books: BookResType[] | null;
   loading: boolean;
   goAdd: () => void;
+  goEdit: (bookId: number) => void;
   logout: () => void;
   removeBook: (bookId: number) => void;
 }
@@ -20,6 +21,7 @@ const Books: React.FC<BooksProps> = ({
   books,
   loading,
   goAdd,
+  goEdit,
   logout,
   removeBook,
 }) => {
@@ -59,6 +61,7 @@ const Books: React.FC<BooksProps> = ({
                 {...record}
                 removeBook={removeBook}
                 key={'{record.bookId}'}
+                goEdit={goEdit}
               />
             ),
           },

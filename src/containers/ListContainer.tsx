@@ -16,6 +16,12 @@ const ListContainer: React.FC = () => {
   const goAdd = useCallback(() => {
     dispatch(push('/add'));
   }, [dispatch]);
+  const goEdit = useCallback(
+    (bookId: number) => {
+      dispatch(push(`/edit/${bookId}`));
+    },
+    [dispatch],
+  );
   const logout = useCallback(() => {
     dispatch(logoutSaga());
   }, [dispatch]);
@@ -40,6 +46,7 @@ const ListContainer: React.FC = () => {
       books={books}
       loading={loading}
       goAdd={goAdd}
+      goEdit={goEdit}
       logout={logout}
       removeBook={removeBook}
     />
