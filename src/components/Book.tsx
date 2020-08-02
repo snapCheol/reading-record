@@ -49,8 +49,9 @@ const Book: React.FC<BookProps> = ({ removeBook, goEdit, ...record }) => {
         </Tooltip>
         <Tooltip title="삭제">
           <Button
-          // declare const ButtonTypes: ["default", "primary", "ghost", "dashed", "link", "text"] 오류 발생으로 인한 수정
-            // type="danger"
+            // danger property 추가
+            type="primary"
+            danger
             shape="circle"
             icon={<DeleteOutlined />}
             className={styles.link_url}
