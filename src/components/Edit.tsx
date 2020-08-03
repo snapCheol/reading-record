@@ -1,11 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { message as messageDialog, PageHeader, Input, Button } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { FormOutlined } from '@ant-design/icons';
+import { getBooks as getBooksSaga } from '../redux/modules/books';
 
 import Layout from './Layout';
 import { BookResType, BookReqType } from '../types';
 import styles from './Edit.module.css';
+import { useDispatch } from 'react-redux';
 
 interface EditProps {
   book: BookResType | undefined | null;
@@ -25,7 +27,14 @@ const Edit: React.FC<EditProps> = ({ book, loading, logout, edit }) => {
   const authorRef = useRef<Input>(null);
   const urlRef = useRef<Input>(null);
 
-  if (book === null) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!book) {
+      dispatch(getBooksSaga());
+    }
+  }, [book]);
+
+  if (loading || book === null) {
     return null;
   }
 

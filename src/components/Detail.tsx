@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PageHeader, Button, Input } from 'antd';
 import { BookOutlined } from '@ant-design/icons';
+import { getBooks as getBooksSaga } from '../redux/modules/books';
 
 import Layout from './Layout';
 import { BookResType } from '../types';
 import styles from './Detail.module.css';
+import { useDispatch } from 'react-redux';
 
 const { TextArea } = Input;
 
 interface DetailProps {
   book: BookResType | null | undefined;
+  loading: boolean;
   logout: () => void;
   goEdit: () => void;
 }
 
 // [project] 컨테이너에 작성된 함수를 컴포넌트에서 이용했다.
 // [project] BookResType 의 응답 값을 이용하여, Detail 컴포넌트를 완성했다.
-const Detail: React.FC<DetailProps> = ({ book, logout, goEdit }) => {
-  if (book === null) {
+const Detail: React.FC<DetailProps> = ({ book, logout, goEdit, loading }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!book) {
+      dispatch(getBooksSaga());
+    }
+  }, [book]);
+
+  if (loading || book === null) {
     return null;
   }
 
