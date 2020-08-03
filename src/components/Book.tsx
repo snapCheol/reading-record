@@ -15,6 +15,25 @@ interface BookProps extends BookResType {
 // [project] BookResType 의 응답 값을 이용하여, Book 컴포넌트를 완성했다.
 const Book: React.FC<BookProps> = ({ removeBook, goEdit, ...record }) => {
   const { title, bookId, author, createdAt, url } = record;
+  const createDateObj = new Date(createdAt);
+  const createYear = createDateObj.getFullYear();
+  const createMonth = (() => {
+    const month = createDateObj.getMonth() + 1;
+    return month < 10 ? `0${month}` : month;
+  })();
+  const createDate = createDateObj.getDate();
+  const createTimes = (() => {
+    let hour: number | string = createDateObj.getHours();
+    const createMinutes = createDateObj.getMinutes();
+
+    const ampm = hour < 12 ? 'am' : 'pm';
+    hour = hour >= 12 ? hour - 12 : hour;
+    hour = hour < 10 ? `0${hour}` : hour;
+    return `${hour}:${createMinutes} ${ampm}`;
+  })();
+
+  const changeCreateDate = `${createMonth}-${createDate}-${createYear} ${createTimes}`;
+
   return (
     <div className={styles.book}>
       <h3 className={styles.title}>
@@ -25,7 +44,7 @@ const Book: React.FC<BookProps> = ({ removeBook, goEdit, ...record }) => {
       <div className={styles.author}>
         <Link to={`/book/${bookId}`}>{author}</Link>
       </div>
-      <div className={styles.created}>{createdAt}</div>
+      <div className={styles.created}>{changeCreateDate}</div>
       <div className={styles.tooltips}>
         <Tooltip title={url}>
           <Button
